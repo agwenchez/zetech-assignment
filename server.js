@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 
 // import routes
 app.use('/hod', require('./routes/hod'))
+app.use('/order_of_names', require('./routes/order_of_names'))
 
 app.listen(port, () => {
     console.log(`App running on port: ${port}.`)
