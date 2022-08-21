@@ -20,7 +20,7 @@ router.get('/all', async (req, res) => {
 // Fill order of names form
 router.post('/create_new', async (req, res) => {
   const stage = 1
-  const { fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno } = req.body;
+  const { fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno, approved } = req.body;
 
   try {
     // check existing
@@ -29,7 +29,7 @@ router.post('/create_new', async (req, res) => {
       res.status(409).json({ "response": 'A student with that admission number already exists' })
     }
 
-    const newStudent = await pool.query('INSERT INTO order_of_names(fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *', [fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno])
+    const newStudent = await pool.query('INSERT INTO order_of_names(fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno, approved ) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *', [fullname, admission_no, year_of_admission, department, programme, phonenumber, email, id_no, guardian_phoneno, approved])
     if (newStudent.rows.length) {
       const updateStage = await pool.query('INSERT INTO stages(admission_no, stage) VALUES($1,$2) RETURNING *', [admission_no, stage])
       updateStage.rows.length && res.status(201).json({ "response": `${fullname}; You have successfully submitted your order of names to the HOD` });
@@ -40,8 +40,6 @@ router.post('/create_new', async (req, res) => {
     res.status(500).json({ "error": `An error occured: ${error}` })
   }
 })
-
-
 
 // update order of names by admission no
 router.put('/update', async (req, res) => {
@@ -56,8 +54,6 @@ router.put('/update', async (req, res) => {
   }
 
 })
-
-
 
 // delete a student by admission_no
 router.delete('/delete', async (req, res) => {

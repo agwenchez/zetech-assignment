@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
 // import routes
 app.use('/hod', require('./routes/hod'))
 app.use('/order_of_names', require('./routes/order_of_names'))
+app.use('/librarian', require('./routes/librarian'))
+app.use('/finance',require('./routes/finance'));
+app.use('/records',require('./routes/records'));
+app.use('/payments',require('./routes/payments'));
+
 
 app.listen(port, () => {
     console.log(`App running on port: ${port}.`)
